@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-4"></div>
+
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body centralizar">
+          <h2>
+            {{ cursoForm.value.id ? 'Atualizar' : 'Cadastrar' }} Curso
+          </h2>
+
+          <form [formGroup]="cursoForm" (ngSubmit)="salvarCurso()">
+
+            <label for="nome">Nome do Curso:</label>
+            <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Digite o nome do curso">
+            <div class="text-danger">
+              <span *ngIf="cursoForm.get('nome')?.invalid && cursoForm.get('nome')?.touched">
+                Nome é obrigatório.
+              </span>
+            </div>
+            <br>
+
+            <label for="turma">Turma:</label>
+            <select class="form-control" id="turma" formControlName="turma">
+              <option value="">Selecione uma turma</option>
+              <option *ngFor="let turma of turmas" [value]="turma.id" [selected]="cursoForm.get('turma')?.value === turma.id">
+                {{ turma.nome }} -
+                {{ turma.semestre }},
+                {{ turma.ano }} (
+                {{ turma.turno }})
+              </option>
+            </select>
+            <br>
+
+            <button type="submit" class="btn btn-success" [disabled]="cursoForm.invalid">
+              {{ cursoForm.value.id ? 'Atualizar Curso' : 'Cadastrar Curso' }}
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4"></div>
+  </div>
+</div>

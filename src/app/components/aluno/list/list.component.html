@@ -1,0 +1,61 @@
+<h2 style="text-align: center; color: #333; font-family: Arial, sans-serif;">Lista de Alunos</h2>
+<div style="display: flex; justify-content: end; align-items: center; height: 100%;">
+  <button class="btn btn-primary" style="margin-right: 10px;" (click)="cadastrarAluno()">
+    Cadastrar novo aluno
+  </button>
+</div>
+<ul style="list-style-type: none; padding: 0;">
+  @for (aluno of alunos; track $index){
+  <li style="border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; background-color: #f9f9f9;">
+    <div class="row">
+      <div class="col-6">
+        <h3 style="margin: 0; font-size: 18px; color: #2c3e50;">
+          {{ aluno.nome }}
+        </h3>
+        <p style="font-size: 14px; color: #7f8c8d;">CPF: <strong>
+            {{ aluno.cpf }}</strong></p>
+        <p style="font-size: 14px; color: #7f8c8d;">Telefone: <strong>
+            {{ aluno.telefone || "Não informado" }}</strong></p>
+        <p style="font-size: 14px; color: #7f8c8d;">Cadastro Completo: <strong>
+            {{ aluno.cadastroCompleto ? "Sim" : "Não" }}</strong></p>
+
+        <div style="margin-top: 10px;">
+          <strong>Turma:</strong>
+          {{ aluno.turma?.nome }} <br>
+          Semestre:
+          {{ aluno.turma?.semestre }}, Ano:
+          {{ aluno.turma?.ano }}, Turno:
+          {{ aluno.turma?.turno }}<br>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <strong>Professores:</strong>
+          <ul style="list-style-type: none; padding-left: 20px;">
+            @if ((aluno.turma?.professores ?? []).length > 0){
+            @for (professor of aluno.turma?.professores; track $index){
+            <li style="font-size: 14px; color: #34495e; margin-bottom: 5px;">
+              <strong>
+                {{ professor.nome }}</strong> - Especialidade: <em>
+                {{ professor.especialidade }}</em>
+            </li>
+            }
+            } @else {
+            <li style="font-size: 14px; color: #e74c3c;">Sem professores cadastrados.</li>
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="col-6">
+        <div style="display: flex; justify-content: end; align-items: center; height: 100%;">
+          <button class="btn btn-primary" style="margin-right: 10px;" (click)="editarAluno(aluno.id)">
+            Editar
+          </button>
+          <button class="btn btn-danger" (click)="deletarAluno(aluno.id)">
+            Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+  </li>
+  }
+</ul>
