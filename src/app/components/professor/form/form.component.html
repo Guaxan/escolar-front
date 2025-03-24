@@ -1,1 +1,52 @@
-<p>form works!</p>
+<div class="container">
+    <div class="row">
+      <div class="col-4"></div>
+  
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body centralizar">
+            <h2>{{ professorForm.get('id')?.value ? 'Editar Professor' : 'Cadastro de Professor' }}</h2>
+  
+            <form [formGroup]="professorForm" (ngSubmit)="salvarProfessor()">
+  
+              <label for="nome">Nome:</label>
+              <input type="text" class="form-control" id="nome" formControlName="nome">
+              <div *ngIf="professorForm.get('nome')?.invalid && professorForm.get('nome')?.touched" class="text-danger">
+                Nome é obrigatório.
+              </div>
+              <br>
+
+              <label for="cpf">CPF:</label>
+              <input type="text" class="form-control" id="cpf" formControlName="cpf">
+              <div *ngIf="professorForm.get('cpf')?.invalid && professorForm.get('cpf')?.touched" class="text-danger">
+                CPF é obrigatório.
+              </div>
+              <br>
+
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              <div *ngIf="professorForm.get('email')?.invalid && professorForm.get('email')?.touched" class="text-danger">
+                Email inválido.
+              </div>
+              <br>
+
+              <label for="especialidade">Especialidade:</label>
+              <input type="text" class="form-control" id="especialidade" formControlName="especialidade">
+              <div *ngIf="professorForm.get('especialidade')?.invalid && professorForm.get('especialidade')?.touched" class="text-danger">
+                Especialidade é obrigatória.
+              </div>
+              <br>
+
+              <button type="submit" class="btn btn-success" [disabled]="professorForm.invalid">
+                {{ professorForm.get('id')?.value ? 'Atualizar' : 'Salvar' }}
+              </button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-4"></div>
+    </div>
+</div>

@@ -7,7 +7,7 @@ import { Professor } from '../models/professor';
   providedIn: 'root'
 })
 export class ProfessorService {
-  private apiUrl = 'http://localhost:8080/api/Professor';
+  private apiUrl = 'http://localhost:8080/api/professor';
 
   constructor(private http: HttpClient) { }
 

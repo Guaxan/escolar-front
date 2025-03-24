@@ -28,7 +28,7 @@ export const routes: Routes = [
             { path: 'professor/new', component: ProfessorFormComponent },
             { path: 'professor/edit/:id', component: ProfessorFormComponent },
 
-            { path: 'turmad', component: TurmaListComponent },
+            { path: 'turma', component: TurmaListComponent },
             { path: 'turma/new', component: TurmaFormComponent },
             { path: 'turma/edit/:id', component: TurmaFormComponent },
         ]
