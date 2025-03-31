@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body">
+
+          <form #formulario="ngForm" (ngSubmit)="save()">
+
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="professor.nome" mdbInput type="text" class="form-control" name="nome">
+                <label mdbLabel class="form-label">Nome:</label>
+              </mdb-form-control>
+            </div>
+
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="professor.cpf" mdbInput type="text" class="form-control" name="CPF">
+                <label mdbLabel class="form-label">CPF:</label>
+              </mdb-form-control>
+            </div>
+
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="professor.email" mdbInput type="text" class="form-control" name="email">
+                <label mdbLabel class="form-label">Email:</label>
+              </mdb-form-control>
+            </div>
+
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="professor.especialidade" mdbInput type="text" class="form-control" name="especialidade">
+                <label mdbLabel class="form-label">Especialidade:</label>
+              </mdb-form-control>
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" [disabled]="!formulario.valid" class="btn btn-success btn-rounded">
+                <i class="fas fa-save fa-sm"></i>
+                {{ professor.id > 0 ? 'Atualizar' : 'Salvar'}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modalTurmaList>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Listagem de Turmas</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-turma-list (modoModal)="true" (meuEvento)="meuEventoTratamento()"></app-turma-list>
+  </div>
+</ng-template>

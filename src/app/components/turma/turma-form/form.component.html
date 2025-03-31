@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <!-- Formulário -->
+          <form #formulario="ngForm" (ngSubmit)="save()">
+
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="turma.nome" mdbInput type="text" class="form-control" name="nome">
+                <label mdbLabel class="form-label">Nome:</label>
+              </mdb-form-control>
+            </div>
+
+            <!-- Semestre -->
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="turma.semestre" mdbInput type="text" class="form-control" name="semestre">
+                <label mdbLabel class="form-label">Semestre:</label>
+              </mdb-form-control>
+            </div>
+
+            <!-- Ano -->
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="turma.ano" mdbInput type="text" class="form-control" name="ano">
+                <label mdbLabel class="form-label">Ano:</label>
+              </mdb-form-control>
+            </div>
+
+            <!-- Turno -->
+            <div class="mb-3">
+              <mdb-form-control>
+                <input required [(ngModel)]="turma.turno" mdbInput type="text" class="form-control" name="ano">
+                <label mdbLabel class="form-label">Turno:</label>
+              </mdb-form-control>
+            </div>
+
+            <!-- Botão de salvar -->
+            <div class="text-center mt-4">
+              <button type="submit" [disabled]="!formulario.valid" class="btn btn-success btn-rounded">
+                <i class="fas fa-save fa-sm"></i>
+                {{ turma.id > 0 ? 'Atualizar' : 'Salvar'}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

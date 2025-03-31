@@ -12,9 +12,9 @@ export class AlunoService {
   constructor(private http: HttpClient) { }
 
   // Salvar um novo aluno
-  saveAluno(aluno: Aluno): Observable<string> {
+  saveAluno(aluno: any): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/save`, aluno, {
-      responseType: 'text' as 'json' 
+      responseType: 'text' as 'json'
     });
   }
 
@@ -29,9 +29,10 @@ export class AlunoService {
   }
 
   // Atualizar aluno
-  updateAluno(aluno: Aluno): Observable<Aluno> {
-    return this.http.put<Aluno>(`${this.apiUrl}/update`, aluno);
+  updateAluno(aluno: Aluno): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/update/${aluno.id}`, aluno, { responseType: 'text' as 'json' });
   }
+  
 
   // Deletar aluno
   deleteAluno(id: number): Observable<string> {

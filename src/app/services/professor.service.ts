@@ -25,8 +25,8 @@ export class ProfessorService {
     return this.http.get<Professor[]>(`${this.apiUrl}/findAll`);
   }
 
-  updateProfessor(professor: Professor): Observable<Professor> {
-    return this.http.put<Professor>(`${this.apiUrl}/update`, professor);
+  updateProfessor(professor: Professor): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/update/${professor.id}`, professor, { responseType: 'text' as 'json'});
   }
 
   deleteProfessor(id: number): Observable<string> {

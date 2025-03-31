@@ -11,24 +11,30 @@ export class CursoService {
 
   constructor(private http: HttpClient) {}
 
+
   saveCurso(curso: Curso): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/save`, curso, {
       responseType: 'text' as 'json'
     });
   }
 
+
   getCursoById(id: number): Observable<Curso> {
     return this.http.get<Curso>(`${this.apiUrl}/findById/${id}`);
   }
+
 
   getCursos(): Observable<Curso[]> {
     return this.http.get<Curso[]>(`${this.apiUrl}/findAll`);
   } 
 
-  updateCurso(curso: Curso): Observable<Curso> {
-    return this.http.put<Curso>(`${this.apiUrl}/update`, curso);
+
+  updateCurso(curso: Curso): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/update/${curso.id}`, curso, { responseType: 'text' as 'json'});
   }
 
+
+  
   deleteCurso(id: number): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/delete/${id}`, { responseType: 'text' as 'json' });
   }

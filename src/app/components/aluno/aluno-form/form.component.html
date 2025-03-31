@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <form #formulario="ngForm" (ngSubmit)="save()">
+            <div class="row">
+
+              <!-- Nome -->
+              <div class="mb-3">
+                <mdb-form-control>
+                  <input required [(ngModel)]="aluno.nome" mdbInput type="text" name="nome" class="form-control" />
+                  <label mdbLabel class="form-label">Nome do Aluno:</label>
+                </mdb-form-control>
+              </div>
+
+              <!-- CPF -->
+              <div class="mb-3">
+                <mdb-form-control>
+                  <input required [(ngModel)]="aluno.cpf" mdbInput type="text" name="cpf" class="form-control" />
+                  <label mdbLabel class="form-label">CPF do Aluno:</label>
+                </mdb-form-control>
+              </div>
+
+              <!-- Telefone -->
+              <div class="mb-3">
+                <mdb-form-control>
+                  <input required [(ngModel)]="aluno.telefone" mdbInput type="text" name="telefone" class="form-control" />
+                  <label mdbLabel class="form-label">Telefone do Aluno:</label>
+                </mdb-form-control>
+              </div>
+
+              <!-- Turma -->
+              <div class="mb-3">
+                <mdb-form-control>
+                  <select required [(ngModel)]="aluno.turma" name="turma" mdbSelect class="form-control">
+                    <option [ngValue]="null" disabled>Selecione uma turma</option>
+                    <option *ngFor="let turma of turmas" [ngValue]="turma">
+                      {{ turma.nome }}
+                    </option>
+                  </select>
+                  <label mdbLabel class="form-label">Turma:</label>
+                </mdb-form-control>
+              </div>              
+            </div>
+
+            <!-- Botão Salvar/Atualizar -->
+            <div class="text-center mt-4">
+              <button type="submit" [disabled]="!formulario.valid" class="btn btn-success btn-rounded">
+                <i class="fas fa-save fa-sm"></i>
+                {{ aluno.id > 0 ? 'Atualizar' : 'Salvar' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

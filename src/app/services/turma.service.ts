@@ -7,9 +7,9 @@ import { Turma } from '../models/turma';
   providedIn: 'root'
 })
 export class TurmaService {
- private apiUrl = 'http://localhost:8080/api/turma';
+  private apiUrl = 'http://localhost:8080/api/turma';
 
-  constructor( private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // Salvar uma nova turma
   saveTurma(turma: Turma): Observable<Turma> {
@@ -27,8 +27,8 @@ export class TurmaService {
   }
 
   // Atualizar turma 
-  updateTurma(turma: Turma): Observable<Turma> {
-    return this.http.put<Turma>(`${this.apiUrl}/update`, turma);
+  updateTurma(turma: Turma): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}/update/${turma.id}`, turma, { responseType: 'text' as 'json' });
   }
 
   // Deletar turma

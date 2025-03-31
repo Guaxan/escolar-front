@@ -1,0 +1,67 @@
+<h2 style="text-align: center; color: #333; font-family: Arial, sans-serif;">Lista de Turmas</h2>
+
+<div style="display: flex; justify-content: end; align-items: center;">
+  <button class="btn btn-primary" style="margin-right: 10px;" (click)="new()">
+    Cadastrar nova turma
+  </button>
+</div>
+
+<ul style="list-style-type: none; padding: 0;">
+  @for (turma of listaTurmas; track $index){
+  <li style="border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; background-color: #f9f9f9;">
+    <div class="row">
+      <div class="col-6">
+        <h3 style="margin: 0; font-size: 18px; color: #2c3e50;">
+          {{ turma.nome }}
+        </h3>
+        <p style="font-size: 14px; color: #7f8c8d;">Semestre: <strong>
+            {{ turma.semestre }}</strong></p>
+        <p style="font-size: 14px; color: #7f8c8d;">Ano: <strong>
+            {{ turma.ano }}</strong></p>
+        <p style="font-size: 14px; color: #7f8c8d;">Turno: <strong>
+            {{ turma.turno }}</strong></p>
+
+        <div style="margin-top: 10px;">
+          <strong>Professores:</strong>
+          <div class="d-flex flex-wrap">
+            <ng-container *ngFor="let professor of turma?.professores; let i = index">
+              <span class="badge badge-primary m-1">
+                {{ professor.nome }} - {{professor.especialidade}}
+              </span>
+            </ng-container>
+            @if (!turma?.professores || turma?.professores?.length === 0) {
+            <span style="font-size: 14px; color: #7f8c8d;">
+              <strong>Nenhum professor atribuído</strong>
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div style="display: flex; justify-content: end; align-items: center; height: 100%;">
+          <button class="btn btn-primary" style="margin-right: 10px;" (click)="edit(turma)">
+            Editar
+          </button>
+          <button class="btn btn-danger" (click)="deletarTurma(turma.id)">
+            Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+  </li>
+  }
+</ul>
+
+<!-- Modal -->
+<ng-template #modalTurmaForm>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">
+      {{ turmaEdit.id > 0 ? 'Editar Turma' : 'Nova Turma' }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-turma-form [turma]="turmaEdit" (retorno)="retornoDetalhe($event)"></app-turma-form>
+  </div>
+</ng-template>

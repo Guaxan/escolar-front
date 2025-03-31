@@ -1,11 +1,11 @@
 <h2 style="text-align: center; color: #333; font-family: Arial, sans-serif;">Lista de Cursos</h2>
-<div style="display: flex; justify-content: end; align-items: center; height: 100%;">
-  <button class="btn btn-primary" style="margin-right: 10px;" (click)="cadastrarCurso()">
+<div style="display: flex; justify-content: end; align-items: center;">
+  <button class="btn btn-primary" style="margin-right: 10px;" (click)="new()">
     Cadastrar novo curso
   </button>
 </div>
 <ul style="list-style-type: none; padding: 0;">
-  @for (curso of cursos; track $index){
+  @for (curso of listaCursos; track $index){
   <li style="border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; background-color: #f9f9f9;">
     <div class="row">
       <div class="col-6">
@@ -14,7 +14,6 @@
         </h3>
         <p style="font-size: 14px; color: #7f8c8d;">ID: <strong>
             {{ curso.id }}</strong></p>
-
         <div class="row">
           <div>
             <strong>Turma:</strong>
@@ -34,10 +33,10 @@
       </div>
       <div class="col-6">
         <div style="display: flex; justify-content: end; align-items: center; height: 100%;">
-          <button class="btn btn-primary" style="margin-right: 10px;" (click)="editarCurso(curso.id)">
+          <button class="btn btn-primary" style="margin-right: 10px;" (click)="edit(curso)">
             Editar
           </button>
-          <button class="btn btn-danger" (click)="excluirCurso(curso.id)">
+          <button class="btn btn-danger" (click)="deletarCurso(curso.id)">
             Excluir
           </button>
         </div>
@@ -46,3 +45,16 @@
   </li>
   }
 </ul>
+
+<!-- Modal -->
+<ng-template #modalCursoForm>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">
+      {{ cursoEdit.id > 0 ? 'Editar Curso' : 'Novo Curso' }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-curso-form [curso]="cursoEdit" (retorno)="retornoDetalhe($event)"></app-curso-form>
+  </div>
+</ng-template>
