@@ -2,20 +2,17 @@ import { Component, EventEmitter, inject, Input, Output, TemplateRef, ViewChild 
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TurmaListComponent } from '../../turma/turma-list/list.component';
 import { ProfessorService } from '../../../services/professor.service';
 import { Professor } from '../../../models/professor';
-import { TurmaService } from '../../../services/turma.service';
-import { Turma } from '../../../models/turma';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import Swal from 'sweetalert2';
-import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { MdbModalRef, MdbModalService, MdbModalModule } from 'mdb-angular-ui-kit/modal';
 
 @Component({
   selector: 'app-professor-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, MdbFormsModule, TurmaListComponent],
+  imports: [CommonModule, FormsModule, MdbFormsModule,MdbModalModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss'
 })
@@ -25,7 +22,6 @@ export class ProfessorFormComponent {
   @Output("retorno") retorno = new EventEmitter();
 
   professorService = inject(ProfessorService);
-  turmaService = inject(TurmaService);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -74,6 +70,4 @@ export class ProfessorFormComponent {
     }
     this.retorno.emit(this.professor);
   }
-
-  meuEventoTratamento() { }
 }

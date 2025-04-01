@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -6,53 +6,35 @@ import { TurmaService } from '../../../services/turma.service';
 import { Turma } from '../../../models/turma';
 import { Professor } from '../../../models/professor';
 import { ProfessorService } from '../../../services/professor.service';
+import { ProfessorListComponent } from '../../professor/professor-list/list.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import Swal from 'sweetalert2';
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
 @Component({
   selector: 'app-turma-form',
   standalone: true,
-  imports: [MdbFormsModule, FormsModule, CommonModule],
+  imports: [MdbFormsModule, FormsModule, CommonModule, ProfessorListComponent],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
 export class TurmaFormComponent {
-
-
-  @Input("turma") turma: Turma = new Turma();
-  @Output("retorno") retorno = new EventEmitter();
-
   turmaService = inject(TurmaService);
-  professorService = inject(ProfessorService);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  professores: Professor[] = [];
+  turma: Turma = new Turma();
+
+  @ViewChild('modalProfessorList') modalProfessorList!: TemplateRef<any>;
+  modalService = inject(MdbModalService);
+  modalRef!: MdbModalRef<any>;
 
   constructor() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.carregarTurma(Number(id));
+    let id = this.route.snapshot.params['id'];
+    if (id > 0) {
+      this.findById(id);
     }
-    this.carregarProfessores();
-  }
-
-  private carregarTurma(id: number): void {
-    this.turmaService.getTurmaById(id).subscribe({
-      next: (dados) => {
-        this.turma = dados
-      },
-      error: (erro: HttpErrorResponse) => 
-        console.error(`Erro ao buscar turma com ID ${id}:`, erro)
-    });
-  }
-
-  private carregarProfessores() {
-    this.professorService.getProfessores().subscribe({
-      next: (dados) => (this.professores = dados),
-      error: (erro: HttpErrorResponse) => console.error('Erro ao buscar professores', erro)
-    });
   }
 
   save() {
@@ -60,7 +42,6 @@ export class TurmaFormComponent {
       this.turmaService.updateTurma(this.turma).subscribe({
         next: (response) => {
           Swal.fire('Sucesso', 'Turma atualizada com sucesso', 'success');
-          this.retorno.emit(this.retorno);
         },
         error: (erro) => {
           Swal.fire('Erro', erro.error, 'error');
@@ -70,13 +51,40 @@ export class TurmaFormComponent {
       this.turmaService.saveTurma(this.turma).subscribe({
         next: (response) => {
           Swal.fire('Sucesso', 'Turma cadastrada com sucesso', 'success');
-          this.carregarProfessores();
         },
         error: (erro) => {
           Swal.fire('Erro', erro.error, 'error');
         },
       });
     }
-    this.retorno.emit(this.turma);
+  }
+
+  findById(id: number) {
+    this.turmaService.getTurmaById(id).subscribe({
+      next: (response) => {
+        this.turma = response;
+      },
+      error: (erro) => {
+        Swal.fire('Erro', erro.error, 'error');
+      },
+    });
+  }
+
+  retornoProfessorList(professores: Professor) {
+
+    if (this.turma.professores == null)
+      this.turma.professores = [];
+
+    this.turma.professores.push(professores);
+    this.modalRef.close();
+  }
+
+  buscarProfessores() {
+    this.modalRef = this.modalService.open(this.modalProfessorList, { modalClass: "modal-xl" });
+  }
+
+  deletaProfessor(professor: Professor) {
+    let indice = this.turma.professores.findIndex(x => { return x.id == professor.id });
+    this.turma.professores.splice(indice, 1);
   }
 }

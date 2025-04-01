@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ProfessorFormComponent } from '../professor-form/form.component';
 import { FormsModule } from '@angular/forms';
@@ -12,94 +12,48 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-professor-list',
   standalone: true,
-  imports: [FormsModule, ProfessorFormComponent, MdbModalModule],
+  imports: [FormsModule, MdbModalModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'] 
 })
 export class ProfessorListComponent {
-  professorService = inject(ProfessorService);
-  turmaService = inject(TurmaService);
-  router = inject(Router);
-
-  listaTurmas: Turma[] = [];
-  listaProfessores: Professor[] = [];
-  professorEdit!: Professor;
-  turmaSelecionada!: Turma;
-  professoresSelecionados: number[] = [];
-
-  @ViewChild('modalProfessorForm') modalProfessorForm!: TemplateRef<any>;
-  modalService = inject(MdbModalService);
-  modalRef!: MdbModalRef<any>;
-
-  constructor() {
-    this.getTurmas();
-    this.getProfessores();
-  }
-
-  getTurmas(): void {
-    this.turmaService.getTurmas().subscribe({
-      next: (dados) => {
-        this.listaTurmas = dados;
-      },
-      error: (erro) => {
-        Swal.fire(erro.error, '', 'error')
-      }
-    });
-  }
-
-  private getProfessores() {
-    this.professorService.getProfessores().subscribe({
-      next: (dados) => {
-        this.listaProfessores = dados;
-      },
-      error: (erro) => {
-        Swal.fire(erro.error, '', 'error')
-      }
-    });
-  }
-
-  new() {
-    this.professorEdit = new Professor();
-    this.modalRef = this.modalService.open(this.modalProfessorForm, { modalClass: 'modal-xl' });
+    lista: Professor[] = [];
   
-    this.modalRef.onClose.subscribe(() => {
-      this.getProfessores();
-    });
-  }
-
-  edit(professor: Professor) {
-    this.professorEdit = Object.assign({}, professor);
-    this.modalRef = this.modalService.open(this.modalProfessorForm, { modalClass: 'modal-xl' });
+    @Output("retornoProfessor") retornoProfessor = new EventEmitter();
+    @Input("modoModal") modoModal : boolean = false;
   
-    this.modalRef.onClose.subscribe(() => {
-      this.getProfessores();
-    });
-  }
-
-  deletarProfessor(id: number) {
-    Swal.fire({
-      title: 'Tem certeza?',
-      text: 'Você não poderá reverter isso!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, excluir!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.professorService.deleteProfessor(id).subscribe({
+    professorService = inject(ProfessorService);
+  
+    constructor() {
+      this.findAll();
+    }
+  
+    findAll() {
+      this.professorService.getProfessores().subscribe({
+        next: (listaProfessorRetornado) => {
+          this.lista = listaProfessorRetornado;
+        },
+        error: (erro) => {
+          alert('Deu erro!');
+        },
+      });
+    }
+  
+    deleteById(professor: Professor) {
+      if (confirm('Deseja deletar o professor' + professor.nome + '?')) {
+        this.professorService.deleteProfessor(professor.id).subscribe({
           next: (mensagem) => {
-            Swal.fire(mensagem, '', 'success');
-            this.getProfessores();
+            alert(mensagem);
+            this.findAll();
           },
-          error: (erro) => Swal.fire('Erro', erro.error, 'error')
-        })
+          error: (erro) => {
+            alert('Deu erro!');
+          },
+        });
       }
-    });
+    }
+  
+    selecionarProfessor(professor: Professor){
+      this.retornoProfessor.emit(professor);
+    }
   }
-
-  retornoDetalhe(professor: Professor) {
-    this.getProfessores();
-    this.modalRef.close();
-  }
-}

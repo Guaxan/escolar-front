@@ -81,4 +81,8 @@ export class CursoFormComponent {
     }
     this.retorno.emit(this.curso);
   }
+
+  byId(a: Curso, b: Curso) {
+    return a && b ? a.id === b.id : a === b;
+  }
 }

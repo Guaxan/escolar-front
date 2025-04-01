@@ -1,48 +1,81 @@
-<div class="container mt-4">
+<div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-lg">
-        <div class="card-body">
-          <!-- Formulário -->
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg rounded-4">
+        <div class="card-body p-4">
           <form #formulario="ngForm" (ngSubmit)="save()">
-
-            <div class="mb-3">
+            
+            <div class="mb-4">
               <mdb-form-control>
                 <input required [(ngModel)]="turma.nome" mdbInput type="text" class="form-control" name="nome">
                 <label mdbLabel class="form-label">Nome:</label>
               </mdb-form-control>
             </div>
 
-            <!-- Semestre -->
-            <div class="mb-3">
+            <div class="mb-4">
               <mdb-form-control>
                 <input required [(ngModel)]="turma.semestre" mdbInput type="text" class="form-control" name="semestre">
                 <label mdbLabel class="form-label">Semestre:</label>
               </mdb-form-control>
             </div>
 
-            <!-- Ano -->
-            <div class="mb-3">
+            <div class="mb-4">
               <mdb-form-control>
                 <input required [(ngModel)]="turma.ano" mdbInput type="text" class="form-control" name="ano">
                 <label mdbLabel class="form-label">Ano:</label>
               </mdb-form-control>
             </div>
 
-            <!-- Turno -->
-            <div class="mb-3">
+            <div class="mb-4">
               <mdb-form-control>
-                <input required [(ngModel)]="turma.turno" mdbInput type="text" class="form-control" name="ano">
+                <input required [(ngModel)]="turma.turno" mdbInput type="text" class="form-control" name="turno">
                 <label mdbLabel class="form-label">Turno:</label>
               </mdb-form-control>
             </div>
 
-            <!-- Botão de salvar -->
             <div class="text-center mt-4">
-              <button type="submit" [disabled]="!formulario.valid" class="btn btn-success btn-rounded">
-                <i class="fas fa-save fa-sm"></i>
+              <button type="submit" [disabled]="!formulario.valid" class="btn btn-success btn-lg rounded-pill">
+                <i class="fas fa-save me-2"></i>
                 {{ turma.id > 0 ? 'Atualizar' : 'Salvar'}}
               </button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+              <h5 class="mb-0">Professores:</h5>
+              <button type="button" class="btn btn-primary rounded-pill" mdbRipple (click)="buscarProfessores()">
+                <i class="fas fa-search me-2"></i>Buscar Professores
+              </button>
+            </div>
+
+            <div class="table-responsive mt-3">
+              <table class="table table-hover align-middle border rounded-3">
+                <thead class="table-light">
+                  <tr>
+                    <th>Nome</th>
+                    <th>Especialidade</th>
+                    <th class="text-center">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (professor of turma.professores; track $index) {
+                  <tr>
+                    <td>{{professor?.nome}}</td>
+                    <td>{{professor?.especialidade}}</td>
+                    <td class="text-center">
+                      <button class="btn btn-danger btn-sm rounded-circle" type="button" (click)="deletaProfessor(professor)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  }@empty {
+                  <tr>
+                    <td colspan="3" class="text-center text-muted py-3">
+                      <h6>Nenhum professor selecionado.</h6>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
             </div>
           </form>
         </div>
@@ -50,3 +83,13 @@
     </div>
   </div>
 </div>
+
+<ng-template #modalProfessorList>
+  <div class="modal-header">
+    <h5 class="modal-title">Nova Turma / Editar Turma</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-professor-list [modoModal]="true" (retornoProfessor)="retornoProfessorList($event)"></app-professor-list>
+  </div>
+</ng-template>

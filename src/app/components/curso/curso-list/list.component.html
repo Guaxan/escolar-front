@@ -1,50 +1,56 @@
-<h2 style="text-align: center; color: #333; font-family: Arial, sans-serif;">Lista de Cursos</h2>
-<div style="display: flex; justify-content: end; align-items: center;">
-  <button class="btn btn-primary" style="margin-right: 10px;" (click)="new()">
-    Cadastrar novo curso
-  </button>
+<div class="container mt-5">
+  <h2 class="text-center text-dark">Lista de Cursos</h2>
+  <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary rounded-pill" (click)="new()">
+          <i class="fas fa-plus me-2"></i>Cadastrar novo curso
+      </button>
+  </div>
+  <div class="card shadow-lg rounded-4">
+      <div class="card-body p-4">
+          <div class="table-responsive">
+              <table class="table table-hover align-middle border rounded-3">
+                  <thead class="table-light">
+                      <tr>
+                          <th>Nome</th>
+                          <th>ID</th>
+                          <th>Turma</th>
+                          <th>Semestre</th>
+                          <th>Ano</th>
+                          <th>Turno</th>
+                          <th class="text-center">Ações</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @for (curso of listaCursos; track $index) {
+                      <tr>
+                          <td>{{curso.nome}}</td>
+                          <td>{{curso.id}}</td>
+                          <td>{{curso.turma?.nome || 'Sem turma cadastrada'}}</td>
+                          <td>{{curso.turma?.semestre || '-'}}</td>
+                          <td>{{curso.turma?.ano || '-'}}</td>
+                          <td>{{curso.turma?.turno || '-'}}</td>
+                          <td class="text-center">
+                              <button class="btn btn-primary btn-sm rounded-pill mx-1" (click)="edit(curso)">
+                                  <i class="fas fa-edit"></i> Editar
+                              </button>
+                              <button class="btn btn-danger btn-sm rounded-pill mx-1" (click)="deletarCurso(curso.id)">
+                                  <i class="fas fa-trash"></i> Excluir
+                              </button>
+                          </td>
+                      </tr>
+                      }@empty {
+                      <tr>
+                          <td colspan="7" class="text-center text-muted py-3">
+                              <h6>Nenhum curso cadastrado.</h6>
+                          </td>
+                      </tr>
+                      }
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
 </div>
-<ul style="list-style-type: none; padding: 0;">
-  @for (curso of listaCursos; track $index){
-  <li style="border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; background-color: #f9f9f9;">
-    <div class="row">
-      <div class="col-6">
-        <h3 style="margin: 0; font-size: 18px; color: #2c3e50;">
-          {{ curso.nome }}
-        </h3>
-        <p style="font-size: 14px; color: #7f8c8d;">ID: <strong>
-            {{ curso.id }}</strong></p>
-        <div class="row">
-          <div>
-            <strong>Turma:</strong>
-            {{ curso.turma?.nome || 'Sem turma cadastrada' }} <br>
-          </div>
-          <div>
-            <strong>Semestre:</strong>
-            {{ curso.turma?.semestre || '-' }}
-          </div>
-          <div> <strong>Ano:</strong>
-            {{ curso.turma?.ano || '-' }}
-          </div>
-          <div><strong>Turno:</strong>
-            {{ curso.turma?.turno || '-' }}
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div style="display: flex; justify-content: end; align-items: center; height: 100%;">
-          <button class="btn btn-primary" style="margin-right: 10px;" (click)="edit(curso)">
-            Editar
-          </button>
-          <button class="btn btn-danger" (click)="deletarCurso(curso.id)">
-            Excluir
-          </button>
-        </div>
-      </div>
-    </div>
-  </li>
-  }
-</ul>
 
 <!-- Modal -->
 <ng-template #modalCursoForm>
@@ -58,3 +64,4 @@
     <app-curso-form [curso]="cursoEdit" (retorno)="retornoDetalhe($event)"></app-curso-form>
   </div>
 </ng-template>
+

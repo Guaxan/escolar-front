@@ -24,13 +24,13 @@ export const routes: Routes = [
             { path: 'curso/new', component: CursoFormComponent },
             { path: 'curso/edit/:id', component: CursoFormComponent },
 
-            { path: 'professor', component: ProfessorListComponent },
-            { path: 'professor/new', component: ProfessorFormComponent },
-            { path: 'professor/edit/:id', component: ProfessorFormComponent },
+            { path: 'professores', component: ProfessorListComponent },
+            { path: 'professores/new', component: ProfessorFormComponent },
+            { path: 'professores/edit/:id', component: ProfessorFormComponent },
 
-            { path: 'turma', component: TurmaListComponent },
-            { path: 'turma/new', component: TurmaFormComponent },
-            { path: 'turma/edit/:id', component: TurmaFormComponent },
+            { path: 'turmas', component: TurmaListComponent },
+            { path: 'turmas/new', component: TurmaFormComponent },
+            { path: 'turmas/edit/:id', component: TurmaFormComponent },
         ]
     }
 ];

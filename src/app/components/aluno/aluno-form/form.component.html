@@ -32,16 +32,16 @@
 
               <!-- Turma -->
               <div class="mb-3">
-                <mdb-form-control>
-                  <select required [(ngModel)]="aluno.turma" name="turma" mdbSelect class="form-control">
-                    <option [ngValue]="null" disabled>Selecione uma turma</option>
-                    <option *ngFor="let turma of turmas" [ngValue]="turma">
+                <label mdbLabel class="form-label">Turma:</label>
+                  <select [compareWith]="byId" [(ngModel)]="aluno.turma" name="turma" mdbSelect class="form-control">
+                    <option [ngValue]="undefined" disabled>Selecione uma turma</option>
+                    @for (turma of turmas; track $index) {
+                    <option [ngValue]="turma">
                       {{ turma.nome }}
                     </option>
+                    }
                   </select>
-                  <label mdbLabel class="form-label">Turma:</label>
-                </mdb-form-control>
-              </div>              
+              </div>
             </div>
 
             <!-- Botão Salvar/Atualizar -->

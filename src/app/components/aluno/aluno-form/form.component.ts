@@ -79,4 +79,8 @@ export class AlunoFormComponent {
     }
     this.retorno.emit(this.aluno);
   }
+
+  byId(a: Aluno, b: Aluno) {
+    return a && b ? a.id === b.id : a === b;
+  }
 }
